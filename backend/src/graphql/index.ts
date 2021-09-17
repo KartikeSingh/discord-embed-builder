@@ -1,5 +1,5 @@
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
-import { getGuilds, getGuildChannels } from '../utility';
+import { getGuilds, getGuildChannels, getGuild } from '../utility';
 
 const userType = new GraphQLObjectType({
     name: "UserType",
@@ -53,6 +53,15 @@ const rootSchema = new GraphQLObjectType({
                 return await getGuildChannels(args.guild, req.user);
             }
         },
+        getGuild: {
+            type: guildType,
+            args: {
+                guild: { type: GraphQLString }
+            },
+            async resolve(source, args) {
+                return await getGuild(args.guild);
+            }
+        }
     }
 })
 

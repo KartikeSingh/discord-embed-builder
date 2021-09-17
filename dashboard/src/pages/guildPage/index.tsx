@@ -1,11 +1,20 @@
 import React, { FC, Fragment } from "react";
-import { Navbar } from "../../components/";
+import { Navbar, EmbedForm } from "../../components/";
 import { useQuery } from '@apollo/client';
-import { homePageQuery } from "../../graphql/query";
+import { GuildPageQuery } from "../../graphql/query";
+import { RouteComponentProps } from "react-router-dom";
 
-export const Home: FC = () => {
+interface matchParam {
+    guild: string
+}
 
-    const { data, loading, error } = useQuery(homePageQuery);
+export const GuildPage: FC<RouteComponentProps<matchParam>> = ({ match }) => {
+
+    const { data, loading, error } = useQuery(GuildPageQuery, {
+        variables: {
+            guild: match.params.guild
+        }
+    });
 
     if (loading && !error && !data) {
         return (
@@ -20,17 +29,10 @@ export const Home: FC = () => {
             </Fragment>
         )
     } else {
-        console.log(data);
-
         return (
             <Fragment>
                 <Navbar user={data.getUser} />
-                <div className="container__home">
-                    <h1>Embed Generator</h1>
-                    <p>Easily create embed for your servers.</p>
-
-                    <button className="button__link"><a href="/menu">Your Servers</a></button>
-                </div>
+                <EmbedForm guild={match.params.guild} channels={data.getChannels} />
             </Fragment>
         )
     }

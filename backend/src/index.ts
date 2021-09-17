@@ -13,6 +13,7 @@ import rootSchema from './graphql';
 import './class/bot';
 import { graphqlHTTP } from 'express-graphql';
 import './strategy/discord';
+import { MessageEmbed } from 'discord.js';
 
 mongoose.connect(process.env.MONGO_URI || "no_uri");
 

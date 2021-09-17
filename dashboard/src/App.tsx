@@ -1,14 +1,14 @@
 import React from 'react';
-import { Home } from './pages';
+import { GuildPage, Home, Menu, } from './pages';
 import { Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/" exact={true} component={Home}/>
-        <Route path="/menu" exact={true} component={Home} />
-        <Route path="/guild/:id" exact={true} component={Home} />
+        <Route path="/" exact={true} component={Home} />
+        <Route path="/menu" exact={true} component={Menu} />
+        <Route path="/guild/:guild" exact={true} component={GuildPage} />
       </Switch>
     </div>
   );

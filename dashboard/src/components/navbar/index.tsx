@@ -9,7 +9,7 @@ interface props {
     }
 }
 
-export const Navbar: FC<props> = ({ user }) => {
+export const Navbar: FC<props | undefined> = ({ user }) => {
     const name = user?.name;
 
     return (
@@ -17,7 +17,7 @@ export const Navbar: FC<props> = ({ user }) => {
             <ul className="navbar">
                 <li><Link to={'/'}>Home</Link></li>
                 <li><Link to={'/menu'}>Menu</Link></li>
-                <li className="right_float"><a href={name ? '/logout' : 'http://localhost:3001/api/auth/login'}>{name ? name : "Login"}</a></li>
+                <li className="right_float"><a href={name ? 'http://localhost:3001/api/auth/logout' : 'http://localhost:3001/api/auth/login'}>{name ? name : "Login"}</a></li>
             </ul>
         </Fragment>
     )

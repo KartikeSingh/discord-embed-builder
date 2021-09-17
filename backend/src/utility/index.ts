@@ -15,7 +15,7 @@ export function decrypt(string: string): string {
 export function getGuilds(user: user) {
     return new Promise(async res => {
         const botGuilds = bot.guilds.cache.toJSON();
-        const userGuilds: Array<guild> | { error: boolean } = (await getUserGuilds(user))?.filter((guild) => (guild.permissions & 0x20) === 0x20);
+        const userGuilds: Array<guild> = (await getUserGuilds(user))?.filter((guild) => (guild.permissions & 0x20) === 0x20);
         const guilds = userGuilds.filter(g => botGuilds.some(v => v.id === g.id));
 
         res(guilds);
@@ -23,18 +23,15 @@ export function getGuilds(user: user) {
 }
 
 async function getUserGuilds(user: user): Promise<Array<guild>> {
+
     return new Promise((res) => {
         Axios.get(`${d_base}/users/@me/guilds`, {
             headers: {
                 Authorization: `Bearer ${decrypt(user.access_token)}`
             }
         }).then(v => {
-           console.log(v.data);
-
             res(v.data);
         }).catch((e) => {
-          console.log(e.toJSON());
-
             res([])
         })
     })
@@ -44,14 +41,30 @@ export async function getGuildChannels(id: string, user: user) {
     return new Promise(res => {
         Axios.get(`${d_base}/guilds/${id}/channels`, {
             headers: {
-                Authorization: `Bearer ${decrypt(user.access_token)}`
+                Authorization: `Bot ${process.env.CLIENT_TOKEN}`
             }
         }).then(v => {
             const channels: Array<channel> = v.data;
 
             res(channels.filter(v => v.type === 0 || v.type === 5 || v.type === 10 || v.type === 11));
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e.toJSON());
+
             res([])
+        })
+    })
+}
+
+export async function getGuild(id: string) {
+    return new Promise(res => {
+        Axios.get(`${d_base}/guilds/${id}`, {
+            headers: {
+                Authorization: `Bot ${process.env.CLIENT_TOKEN}`
+            }
+        }).then(v => {
+            res(v.data);
+        }).catch((e) => {
+            res(null)
         })
     })
 }
