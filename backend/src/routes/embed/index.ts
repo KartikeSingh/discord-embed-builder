@@ -6,8 +6,9 @@ const router = Router();
 const client = bot;
 
 router.post('/:guild/:channel', async (req, res) => {
-    const guild = client.guilds.cache.get(req.params.guild);
+    if (req.headers.authorization !== process.env.TOKEN) return res.status(403).send({ error: true, message: "You do not have access to this route" });
 
+    const guild = client.guilds.cache.get(req.params.guild);
     if (!guild) return res.status(404).send({ message: "Guild Not Found", error: true });
 
     const channel: any = (await guild.channels.fetch()).filter(v => v.type === "GUILD_TEXT" || v.type === "GUILD_NEWS").get(req.params.channel);
@@ -18,7 +19,8 @@ router.post('/:guild/:channel', async (req, res) => {
     if (req.body.footer) embed.setFooter(req.body.footer);
     if (req.body.image) embed.setImage(req.body.image);
     if (req.body.thumbnail) embed.setThumbnail(req.body.thumbnail);
-    if(req.body.timestamps)embed.setTimestamp();
+    if (req.body.timestamps) embed.setTimestamp();
+    embed.setAuthor(req.body.author_name, req.body.author_image, req.body.author_link);
 
     channel.send({ embeds: [embed] }).then((v: Message) => {
         res.send(v);

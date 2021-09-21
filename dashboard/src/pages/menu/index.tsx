@@ -21,14 +21,16 @@ export const Menu: FC<RouterProps> = ({ history }) => {
             </Fragment>
         )
     } else if (data) {
+        if (!data.getUser) history.push('/');
+
         return (
             <Fragment>
                 <Navbar user={data.getUser} />
                 <div className="container__guilds">
-                    {// eslint-disable-next-line
-                        data.getGuilds.map((v, key) => (
+                    {
+                        data ? data?.getGuilds?.map((v, key) => (
                             <GuildCard name={v.name} key={key} id={v.id} icon={v.icon} />
-                        ))
+                        )) : <h1>You donot have any mutual guild with bot where you have manage server permissions.</h1>
                     }
                 </div>
             </Fragment>

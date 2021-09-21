@@ -7,10 +7,15 @@ export function getIcon(hash: string, id: string) {
 }
 
 export function createEmbed(guild: string, channel: string, embed: Embed) {
-    return Axios.post(`http://localhost:3001/api/embed/${guild}/${channel}`, embed);
+    return Axios.post(`http://localhost:3001/api/embed/${guild}/${channel}`, embed, {
+        headers: {
+            authorization: "S0meS3cretT0k3n"
+        }
+    });
 }
 
 interface Embed {
+    channel: string | undefined
     title: string | undefined
     description: string | undefined
     footer: string | undefined
@@ -19,9 +24,7 @@ interface Embed {
     image: string | undefined
     thumbnail: string | undefined
     url: string | undefined
-    author: {
-        name: string | undefined
-        iconURL: string | undefined
-        url: string | undefined
-    },
+    author_name: string | undefined
+    author_image: string | undefined
+    author_link: string | undefined
 }

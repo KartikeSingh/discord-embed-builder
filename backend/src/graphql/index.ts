@@ -41,6 +41,8 @@ const rootSchema = new GraphQLObjectType({
         getGuilds: {
             type: new GraphQLList(guildType),
             async resolve(source, args, req) {
+                if (!req.user) return null;
+
                 return await getGuilds(req.user);
             }
         },
@@ -50,6 +52,8 @@ const rootSchema = new GraphQLObjectType({
                 guild: { type: GraphQLString }
             },
             async resolve(source, args, req) {
+                if (!req.user) return null;
+
                 return await getGuildChannels(args.guild, req.user);
             }
         },

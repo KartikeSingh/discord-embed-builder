@@ -9,7 +9,17 @@ interface props {
     guild: string
 }
 
-export const EmbedForm: FC<props | undefined> = ({ channels, guild }) => {
+export const EmbedForm: FC<props> = ({ channels, guild }) => {
+
+    function changeColor(e: any) {
+        let d = document.getElementById("lable__color");
+
+        if (d) {
+            d.style.backgroundColor = e.target.value;
+        }
+
+        handleChange(e);
+    }
 
     useEffect(() => {
         document.querySelector('form')?.addEventListener('submit', (e) => {
@@ -23,13 +33,10 @@ export const EmbedForm: FC<props | undefined> = ({ channels, guild }) => {
         });
     })
 
-
     let values: InitialValues = {
-        author: {
-            iconURL: undefined,
-            name: undefined,
-            url: undefined
-        },
+        author_link: undefined,
+        author_name: undefined,
+        author_image: undefined,
         channel: channels[0].id,
         color: "RANDOM",
         description: undefined,
@@ -64,7 +71,16 @@ export const EmbedForm: FC<props | undefined> = ({ channels, guild }) => {
             <input onChange={handleChange} className="input__embed" type="text" name="thumbnail" defaultValue={values.description} />
 
             <label htmlFor="color">Color : </label>
-            <input onChange={handleChange} className="input__embed" type="color" name="color" defaultValue={values.description} />
+            <input id="lable__color" onChange={changeColor} className="input__embed__color" type="color" name="color" defaultValue={values.description} />
+
+            <label htmlFor="author_name">Author Name : </label>
+            <input onChange={handleChange} className="input__embed" type="text" name="author_name" defaultValue={values.author_name} />
+
+            <label htmlFor="author_image">Author Image : </label>
+            <input onChange={handleChange} className="input__embed" type="text" name="author_image" defaultValue={values.author_image} />
+
+            <label htmlFor="author_link">Author Link : </label>
+            <input onChange={handleChange} className="input__embed" type="text" name="author_link" defaultValue={values.author_link} />
 
             <label htmlFor="url">Title URL : </label>
             <input onChange={handleChange} className="input__embed" type="text" name="url" defaultValue={values.description} />
@@ -99,9 +115,8 @@ interface InitialValues {
     image: string | undefined
     thumbnail: string | undefined
     url: string | undefined
-    author: {
-        name: string | undefined
-        iconURL: string | undefined
-        url: string | undefined
-    },
+    author_name: string | undefined
+    author_image: string | undefined
+    author_link: string | undefined
+
 }

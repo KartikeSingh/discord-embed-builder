@@ -8,7 +8,7 @@ interface matchParam {
     guild: string
 }
 
-export const GuildPage: FC<RouteComponentProps<matchParam>> = ({ match }) => {
+export const GuildPage: FC<RouteComponentProps<matchParam>> = ({ match, history }) => {
 
     const { data, loading, error } = useQuery(GuildPageQuery, {
         variables: {
@@ -29,6 +29,8 @@ export const GuildPage: FC<RouteComponentProps<matchParam>> = ({ match }) => {
             </Fragment>
         )
     } else {
+        if (!data.getUser) history.push('/');
+
         return (
             <Fragment>
                 <Navbar user={data.getUser} />

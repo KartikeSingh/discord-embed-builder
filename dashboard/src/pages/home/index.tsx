@@ -2,8 +2,9 @@ import React, { FC, Fragment } from "react";
 import { Navbar } from "../../components/";
 import { useQuery } from '@apollo/client';
 import { homePageQuery } from "../../graphql/query";
+import { RouterProps } from "react-router";
 
-export const Home: FC = () => {
+export const Home: FC<RouterProps> = () => {
 
     const { data, loading, error } = useQuery(homePageQuery);
 
@@ -20,8 +21,6 @@ export const Home: FC = () => {
             </Fragment>
         )
     } else {
-        console.log(data);
-
         return (
             <Fragment>
                 <Navbar user={data.getUser} />
